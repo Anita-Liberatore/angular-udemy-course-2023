@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Post } from './model/post';
 
 
 @Component({
@@ -15,7 +16,7 @@ export class AppComponent {
 
   ngOnInit() {}
 
-  onCreatePost(postData: { title: string; content: string }) {
+  onCreatePost(postData: Post) {
     // Send Http request
     console.log(postData);
   }
