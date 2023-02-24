@@ -12,6 +12,7 @@ import { map } from 'rxjs';
 export class AppComponent {
   
   loadedPosts: Post[] = []
+  isLoading = false;
 
   constructor(private http: HttpClient) {}
 
@@ -37,6 +38,7 @@ export class AppComponent {
   }
 
   private fetchPosts() {
+    this.isLoading = true;
     this.http.get<{ [key: string]: Post }>('https://angular-udemy-course-d7968-default-rtdb.firebaseio.com/posts.json')
     .pipe(map(responseData => {
       const postsArray: Post[] = [];
@@ -49,6 +51,7 @@ export class AppComponent {
       return postsArray;
     })
     ).subscribe(posts => {
+      this.isLoading = false;
       this.loadedPosts = posts;
     })
   }
