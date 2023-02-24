@@ -21,10 +21,9 @@ export class AppComponent {
 
   onCreatePost(postData: Post) {
     // Send Http request
-    console.log(postData);
     this.http.post('https://angular-udemy-course-d7968-default-rtdb.firebaseio.com/posts.json', 
     postData).subscribe(response => {
-      console.log(response)
+      
     });
   }
 
@@ -46,10 +45,11 @@ export class AppComponent {
           postsArray.push({ ...responseData[key], id: key})
         }
       }
+      console.log(postsArray)
       return postsArray;
     })
     ).subscribe(posts => {
-      console.log(posts)
+      
     })
   }
 }
