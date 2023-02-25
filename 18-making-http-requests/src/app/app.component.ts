@@ -2,57 +2,45 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Post } from './model/post';
 import { map } from 'rxjs';
-
+import { PostsService } from './services/post.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  
-  loadedPosts: Post[] = []
+  loadedPosts: Post[] = [];
   isLoading = false;
+  isDelete = false;
+  statusDelete!: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private postsService: PostsService) {}
 
   ngOnInit() {
-    this.fetchPosts();
+    this.onFetchPosts();
   }
 
   onCreatePost(postData: Post) {
     // Send Http request
-    this.http.post<{ [key: string]: Post }>('https://angular-udemy-course-d7968-default-rtdb.firebaseio.com/posts.json', 
-    postData).subscribe(response => {
-      console.log(response)
-    });
+    this.postsService.createAndStorePost(postData.title, postData.content);
   }
 
   onFetchPosts() {
-    // Send Http request
-    this.fetchPosts();
+    this.isLoading = true;
+    this.postsService.fetchPosts().subscribe((posts) => {
+      this.isLoading = false;
+      this.loadedPosts = posts;
+    });
   }
 
   onClearPosts() {
-    // Send Http request
-  }
-
-  private fetchPosts() {
-    this.isLoading = true;
-    this.http.get<{ [key: string]: Post }>('https://angular-udemy-course-d7968-default-rtdb.firebaseio.com/posts.json')
-    .pipe(map(responseData => {
-      const postsArray: Post[] = [];
-      for(const key in responseData) {
-        if(responseData.hasOwnProperty(key)) {
-          postsArray.push({ ...responseData[key], id: key})
-        }
-      }
-      console.log(postsArray)
-      return postsArray;
-    })
-    ).subscribe(posts => {
-      this.isLoading = false;
-      this.loadedPosts = posts;
-    })
+    this.postsService
+      .deletePosts()
+      .subscribe(
+        () => (
+          (this.isDelete = true), (this.statusDelete = 'Delete successful'), this.loadedPosts = []
+        )
+      );
   }
 }
