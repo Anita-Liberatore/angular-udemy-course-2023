@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Post } from './model/post';
-import { map } from 'rxjs';
+import { map, Subscription } from 'rxjs';
 import { PostsService } from './services/post.service';
 import { NgForm } from '@angular/forms';
 
@@ -15,11 +15,15 @@ export class AppComponent {
   isLoading = false;
   isDelete = false;
   statusDelete!: string;
-  error = null;
+  error = '';
+  private errSub!: Subscription;
 
   constructor(private http: HttpClient, private postsService: PostsService) {}
 
   ngOnInit() {
+    this.errSub = this.postsService.error.subscribe(errorMsg => {
+      this.error = errorMsg
+    })
     this.onFetchPosts();
   }
 
@@ -48,5 +52,9 @@ export class AppComponent {
           (this.isDelete = true), (this.statusDelete = 'Delete successful'), this.loadedPosts = []
         )
       );
+  }
+
+  ngOnDestroy() {
+    this.errSub.unsubscribe();
   }
 }
