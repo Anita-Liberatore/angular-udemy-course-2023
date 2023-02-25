@@ -29,9 +29,9 @@ export class AppComponent {
 
   onCreatePost(postData: Post, form: NgForm) {
     // Send Http request
-    console.log(form)
     this.postsService.createAndStorePost(postData.title, postData.content);
     form.reset();
+  
   }
 
   onFetchPosts() {
