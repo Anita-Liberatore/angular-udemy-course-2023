@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Post } from './model/post';
 import { map } from 'rxjs';
 import { PostsService } from './services/post.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ export class AppComponent {
   isLoading = false;
   isDelete = false;
   statusDelete!: string;
+  error = null;
 
   constructor(private http: HttpClient, private postsService: PostsService) {}
 
@@ -21,9 +23,11 @@ export class AppComponent {
     this.onFetchPosts();
   }
 
-  onCreatePost(postData: Post) {
+  onCreatePost(postData: Post, form: NgForm) {
     // Send Http request
+    console.log(form)
     this.postsService.createAndStorePost(postData.title, postData.content);
+    form.reset();
   }
 
   onFetchPosts() {
@@ -31,6 +35,8 @@ export class AppComponent {
     this.postsService.fetchPosts().subscribe((posts) => {
       this.isLoading = false;
       this.loadedPosts = posts;
+    }, error => {
+      this.error = error.message;
     });
   }
 
