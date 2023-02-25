@@ -40,6 +40,7 @@ export class AppComponent {
       this.isLoading = false;
       this.loadedPosts = posts;
     }, error => {
+      this.isLoading = false;
       this.error = error.message;
     });
   }
@@ -52,6 +53,10 @@ export class AppComponent {
           (this.isDelete = true), (this.statusDelete = 'Delete successful'), this.loadedPosts = []
         )
       );
+  }
+
+  onHandleError() {
+    this.error = '';
   }
 
   ngOnDestroy() {
