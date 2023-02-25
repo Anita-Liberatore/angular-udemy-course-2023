@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Post } from '../model/post';
 import { catchError, map, Subject, throwError } from 'rxjs';
@@ -29,7 +29,10 @@ export class PostsService {
   fetchPosts() {
     return this.http
       .get<{ [key: string]: Post }>(
-        'https://angular-udemy-course-d7968-default-rtdb.firebaseio.com/posts.json'
+        'https://angular-udemy-course-d7968-default-rtdb.firebaseio.com/posts.json',
+        {
+            headers: new HttpHeaders({'Custom-Header': 'hello'})
+        }
       )
       .pipe(
         map((responseData) => {
