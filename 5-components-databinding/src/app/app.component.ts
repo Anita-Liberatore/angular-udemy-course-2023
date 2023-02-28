@@ -7,23 +7,12 @@ import { Server } from './model/server.model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  serverElements: Server[] = [];
-  newServerName = '';
-  newServerContent = '';
+  serverElements: Server[] = [{
+    type: 'server',
+    name: 'Name server',
+    content: 'Content'
+  }];
+  
 
-  onAddServer() {
-    this.serverElements.push({
-      type: 'server',
-      name: this.newServerName,
-      content: this.newServerContent
-    });
-  }
-
-  onAddBlueprint() {
-    this.serverElements.push({
-      type: 'blueprint',
-      name: this.newServerName,
-      content: this.newServerContent
-    });
-  }
+  
 }
