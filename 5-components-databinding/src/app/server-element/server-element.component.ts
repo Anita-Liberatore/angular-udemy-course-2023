@@ -8,5 +8,5 @@ import { Server } from '../model/server.model';
 })
 export class ServerElementComponent {
 
-  @Input() element!: Server
+  @Input('srvElement') element!: Server
 }
