@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output } from '@angular/core';
 import { Server } from '../model/server.model';
 
 @Component({
@@ -14,11 +14,12 @@ export class CockpitComponent {
   @Output() serverCreated = new EventEmitter<Server>;
   @Output() bluePrintCreated = new EventEmitter<Server>;
 
-  onAddServer() {
-    this.serverCreated.emit(new Server(this.newServerName, this.newServerContent));
+  onAddServer(nameInput: HTMLInputElement) {
+    console.log(nameInput.value)
+    this.serverCreated.emit(new Server(nameInput.value, this.newServerContent));
   }
 
-  onAddBluePrint() {
-    this.bluePrintCreated.emit(new Server(this.newServerName, this.newServerContent));
+  onAddBluePrint(nameInput: HTMLInputElement) {
+    this.bluePrintCreated.emit(new Server(nameInput.value, this.newServerContent));
   }
 }
