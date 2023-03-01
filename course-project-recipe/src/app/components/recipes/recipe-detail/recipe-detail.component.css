@@ -1,3 +1,7 @@
 button {
     margin-left: 4px;
 }
+
+img {
+    max-width: 300px;
+}
